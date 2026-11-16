@@ -1,55 +1,127 @@
-# PyNotes — AI development guide
+# PyNotes — AI 協作開發指南
 
-## Purpose and audience
-PyNotes is a Traditional Chinese, beginner-friendly Python learning site. Each lesson explains one specific Python concept or common error with reproducible examples. Prioritize correctness and clarity over flashy effects. The site is a static website deployed with GitHub Pages; do not introduce a backend, paid APIs, build steps, or dependencies without approval.
+## 1. 專案介紹
 
-## Source of truth and structure
-- `index.html`: landing page, lesson cards, and navigation.
-- `lessons/<slug>.html`: individual lessons. Slugs use lowercase ASCII and hyphens.
-- `css/style.css`: the ONLY shared stylesheet; use existing classes and design tokens.
-- `js/main.js`: shared interactions, including filtering and the mobile menu.
-- `README.md`: setup, deployment, and extension instructions.
-- `AGENTS.md`: these rules. Do not delete or override them.
+PyNotes 是我製作的 Python 初學者學習網站，主要整理一些剛開始學 Python 時容易遇到的錯誤，例如 TypeError、IndexError 和 KeyError。
 
-## Visual and accessibility rules
-- Use Traditional Chinese (`lang="zh-Hant"`) for instructional copy; preserve Python terms and code in English.
-- Use the existing navy/teal palette and CSS custom properties. Reuse the header, breadcrumb, article layout, cards, and footer.
-- Mobile-first, readable on 360px wide screens, visible keyboard focus, semantic HTML, descriptive link text, sufficient contrast.
-- Do not add external CSS frameworks or remote fonts. Avoid inline styles and scripts.
+我希望使用者不只是看到正確答案，而是能先理解錯誤發生的原因，再透過修改程式碼和簡單的練習，加深對 Python 的理解。
 
-## Mandatory lesson format
-Each new lesson must follow this order and include matching anchor IDs:
-1. `#overview` — what the error/concept means and when it occurs.
-2. `#broken` — an **actually reproducible** incorrect code sample and expected error/output; do not fabricate traceback details.
-3. `#why` — explanation in simple language.
-4. `#fixed` — a correct, executable Python example.
-5. `#practice` — one small exercise and a solution in `<details>`.
-6. `#related` — links to related existing lessons and home.
-Use `<pre><code>` for Python code and escape `<`, `>` and `&` in HTML. Examples should run in Python 3 without external libraries unless clearly stated. Distinguish syntax/runtime errors from conceptual misunderstandings.
+網站主要使用 HTML、CSS 和 JavaScript 製作，並透過 GitHub Pages 發布。因為目前的功能不複雜，所以希望維持簡單的架構，不需要另外加入後端、付費 API 或其他不必要的工具。
 
-## Adding a lesson: required workflow
-1. Read this file and inspect `lessons/typeerror.html` and `css/style.css` first.
-2. Pick an unused lowercase hyphenated slug (e.g. `zero-division-error`). Create `lessons/<slug>.html` using the same page shell, navigation, section IDs, and footer.
-3. Write accurate beginner-friendly Traditional Chinese text. Include a broken example, the expected error/output, a corrected example, and a practice answer.
-4. Add exactly one lesson card to `index.html` with a meaningful `data-keywords` attribute, and add the lesson to relevant related links.
-5. Do not edit unrelated lesson content. Keep all internal links relative so GitHub Pages works under `/pynotes-learning/`.
-6. Verify every internal link, keyboard navigation, 360px layout, and Python examples. Update README's lesson list if needed.
-7. In your completion summary, list changed files, the new lesson URL, and the checks performed. Never claim checks you did not perform.
+## 2. 網站檔案與架構
 
-## Editing safeguards
-- Preserve existing URLs and anchors unless explicitly asked to migrate them.
-- Do not silently change the meaning of code examples.
-- No credentials, secrets, tracking scripts, or copied proprietary course materials.
-- When uncertain about technical accuracy, flag the uncertainty and request clarification.
+目前網站主要包含以下檔案：
 
-## Acceptance checklist
-- [ ] All required lesson sections and IDs exist.
-- [ ] Broken and fixed Python snippets behave as described.
-- [ ] Homepage card and related links work with relative paths.
-- [ ] Header, footer, typography, and CSS classes match existing pages.
-- [ ] Search/filter still works and keyboard focus is visible.
-- [ ] New page reads correctly on mobile and desktop.
-- [ ] README and GitHub Pages deployment remain usable.
+- `index.html`：網站首頁，包含網站介紹、教學文章卡片和搜尋功能。
+- `typeerror.html`、`indexerror.html`、`keyerror.html` 等：各個 Python 錯誤的教學頁面。
+- `style.css`：網站的共用樣式，包含顏色、排版和手機版的顯示方式。
+- `main.js`：網站的互動功能，例如文章搜尋與篩選。
+- `README.md`：介紹專案內容、使用方式和網站連結。
+- `AGENTS.md`：記錄 AI 協助修改網站時需要遵守的規則。
 
-## Example future AI task
-"Read AGENTS.md and the existing TypeError lesson. Add a ZeroDivisionError lesson using the required sections, add a searchable card to the homepage, link it from related lessons, and report what you tested. Do not change existing layouts or unrelated content."
+未來如果要新增或修改內容，請先確認 GitHub 上實際的檔案位置，不要直接假設所有檔案都放在同一個資料夾。
+
+## 3. 網站設計原則
+
+我希望 PyNotes 的風格保持簡單、清楚，讓第一次接觸 Python 的人也能輕鬆閱讀。
+
+修改網站時，請遵守以下原則：
+
+- 教學內容以繁體中文為主，Python 語法和錯誤訊息則保留英文。
+- 延續目前深藍色與青綠色的配色，不要隨意更換整體風格。
+- 各篇文章盡量使用相同的標題、導覽列、程式碼區塊和頁尾設計。
+- 文字要容易理解，避免使用太多初學者看不懂的專業術語。
+- 手機和電腦都要能正常閱讀，不能出現文字超出畫面或按鈕無法點擊的情況。
+- 盡量沿用原本的 HTML、CSS 和 JavaScript，不要為了新增小功能就引入新的框架。
+
+## 4. 每篇教學文章的固定格式
+
+為了讓整個網站的內容一致，每篇 Python 教學文章都要包含以下六個部分：
+
+1. **問題介紹（`#overview`）**：簡單說明這個錯誤是什麼，以及通常會在什麼情況下發生。
+2. **錯誤範例（`#broken`）**：提供一段真的會出錯的 Python 程式碼，並顯示對應的錯誤訊息。
+3. **錯誤原因（`#why`）**：用初學者能理解的方式，解釋程式碼為什麼會出錯。
+4. **修正方法（`#fixed`）**：提供可以正常執行的程式碼，讓使用者比較修改前後的差異。
+5. **自己練習（`#practice`）**：設計一道簡單的練習題，並使用 `<details>` 隱藏參考答案，讓使用者可以先自己嘗試。
+6. **延伸閱讀（`#related`）**：放上其他相關文章的連結，方便繼續學習。
+
+程式碼統一使用 `<pre><code>` 顯示。
+
+所有範例都應該能在 Python 3 執行。如果要展示錯誤訊息，必須確認和實際執行結果一致，不要自己編造錯誤內容。
+
+## 5. 新增文章時的操作流程
+
+未來如果請 AI 幫忙新增一篇 Python 教學文章，希望依照以下順序進行：
+
+1. 先閱讀 `AGENTS.md`，了解目前網站的規則。
+2. 查看現有的文章，例如 `typeerror.html`，確認文章排版和內容格式。
+3. 在與現有文章相同的資料夾新增 HTML 檔案，檔名使用小寫英文字母及連字號。
+4. 依照六個固定段落完成教學內容，確認錯誤範例與修正方法都正確。
+5. 在 `index.html` 新增對應的文章卡片，並設定適當的 `data-keywords`，讓使用者可以透過搜尋找到文章。
+6. 如果其他文章與新內容有關，也可以在延伸閱讀加入連結。
+7. 確認新文章的 CSS、JavaScript 和首頁連結都能正常使用。
+8. 如果新增了文章，也要視情況更新 `README.md`。
+
+新增內容時，請盡量不要更動其他已經完成的文章，除非是為了修正錯誤或更新必要的連結。
+
+## 6. 網站連結與路徑注意事項
+
+這次製作網站時，我曾經遇到文章可以正常開啟，但點擊首頁卻出現 404 的問題。後來發現，修改檔案時不能只看連結名稱，還要確認檔案實際放在哪個資料夾。
+
+目前網站透過 GitHub Pages 發布，網址是：
+
+https://qiuyili920917-ux.github.io/pynotes-learning/
+
+因此，未來修改連結時需要注意：
+
+- 如果文章和 `index.html` 位於同一層，可以使用 `href="index.html"` 返回首頁。
+- 如果文章位於其他資料夾，則要依照實際位置調整相對路徑。
+- 不要在沒有確認資料夾位置的情況下，直接使用 `../index.html`。
+- CSS 和 JavaScript 的路徑也要另外確認，避免網頁可以開啟，但排版或互動功能失效。
+- 新增文章後，必須實際點擊首頁、文章卡片和延伸閱讀連結，確認沒有 404。
+
+這部分是我在實際測試網站時遇到的問題，所以希望之後 AI 修改網站時能特別注意。
+
+## 7. AI 修改網站時需要遵守的規則
+
+為了避免修改一個功能卻影響到其他地方，希望 AI 協助開發時遵守以下規則：
+
+- 修改前先了解原本的程式碼，不要直接覆蓋整個網站。
+- 優先使用現有的樣式和功能，避免重複建立類似的程式碼。
+- 不要隨意更改已經可以正常使用的頁面或連結。
+- 如果需要修改 Python 範例，必須確認修改後的結果正確。
+- 不要加入密碼、API Key、追蹤程式或其他不必要的外部服務。
+- 如果不確定檔案位置或功能的運作方式，應該先確認，而不是直接猜測。
+- 每次修改盡量集中在需要處理的部分，方便之後檢查問題。
+
+## 8. 完成後的檢查項目
+
+每次新增文章或修改網站功能後，都需要確認以下事項：
+
+- [ ] 文章包含六個固定段落，目錄可以正確跳轉。
+- [ ] Python 錯誤範例和修正後的程式碼都正確。
+- [ ] 首頁可以正常顯示新增的文章卡片。
+- [ ] 搜尋功能可以找到對應的文章。
+- [ ] 文章的 CSS 和 JavaScript 正常載入。
+- [ ] 點擊 PyNotes 標誌和「首頁」可以回到首頁。
+- [ ] 延伸閱讀的連結可以正常開啟。
+- [ ] 手機版和電腦版的排版都可以正常閱讀。
+- [ ] 原本已經完成的功能沒有受到影響。
+- [ ] GitHub Pages 上的實際網站可以正常使用。
+
+如果沒有實際測試某個項目，就不要直接說已經確認沒問題。
+
+## 9. 修改完成後的回報方式
+
+每次 AI 協助完成修改後，希望能簡單整理：
+
+1. 這次修改了哪些檔案。
+2. 新增或調整了哪些內容。
+3. 實際檢查過哪些功能。
+4. 是否還有需要注意或尚未解決的問題。
+
+這樣可以讓我比較容易追蹤修改紀錄，也方便之後遇到問題時找到原因。
+
+## 10. 未來可以交給 AI 的任務範例
+
+「請先閱讀 AGENTS.md，並參考目前 PyNotes 網站的 TypeError 教學頁面。接著新增一篇 ZeroDivisionError 的教學文章，依照現有格式加入問題介紹、錯誤範例、錯誤原因、修正方法、自己練習和延伸閱讀。完成後請在首頁新增可以搜尋到的文章卡片，確認所有連結和排版正常，並告訴我修改了哪些檔案。不要更動其他已經完成的內容。」
